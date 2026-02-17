@@ -1,0 +1,7 @@
+@for (digit of value(); track $index) {
+  <div class="digit" [style.border-color]="color()">
+    <p class="text">{{digit}}</p>
+    <p class="distance">{{getDistanceIndicator($index)}}</p>
+  </div>
+}
+<div class="color" [style.background]="color()"></div>
