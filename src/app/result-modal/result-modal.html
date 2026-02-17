@@ -1,1 +1,26 @@
-<p>result-modal works!</p>
+<div class="modal">
+    <div class="header">
+        <div class="close" (click)="close.emit()">╳</div>
+    </div>
+    <div class="content">
+        <h1 class="title">
+            @if (win()) {
+                Congratulations!
+            } @else {
+                Better luck next time!
+            }
+        </h1>
+        <p>Score: {{ getScore() }}%</p>
+        <div class="guesses">
+            @for (guess of guesses(); track $index) {
+                <div class="guess">
+                    @for (digit of guess.distance; track $index) {
+                        <div class="digit">{{ getDistanceIndicator(digit) }}</div>
+                    }
+                </div>
+            }
+        </div>
+
+        <button (click)="copyToClipboard()">Copy to clipboard</button>
+    </div>
+</div>

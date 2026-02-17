@@ -3,6 +3,7 @@ import {Random} from '../random';
 import {form, FormField, required} from '@angular/forms/signals';
 import {Guess} from '../guess/guess';
 import {HexDigit} from '../hex-digit';
+import {ResultModal} from "../result-modal/result-modal";
 
 interface GuessModel {
   first: string;
@@ -13,25 +14,28 @@ interface GuessModel {
   sixth: string;
 }
 
-interface GuessResult {
+export interface GuessResult {
   value: string[];
   distance: number[];
 }
 
 @Component({
   selector: 'app-game',
-  imports: [FormField, Guess, HexDigit],
+  imports: [FormField, Guess, HexDigit, ResultModal],
   templateUrl: './game.html',
   styleUrl: './game.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Game {
   private random: Random = inject(Random);
   private readonly MAX_GUESSES = 5;
 
-  public win = signal<boolean>(false);
+  public win = signal(false);
+  public gameFinished = signal(false);
   public guesses = signal<GuessResult[]>([]);
-  public showResult = signal<boolean>(false);
+  public guessesReverse = computed(() => {
+    return [...this.guesses()].reverse();
+  });
+  public showResult = signal(false);
   public id = input<number>();
   public gameSeed = computed<number>(() => {
     const id = this.id() ?? this.random.daysSinceStart();
@@ -41,12 +45,11 @@ export class Game {
     const rng = this.random.getRng(this.gameSeed());
     return rng().toString(16).slice(2, 8).toUpperCase();
   });
-  public guessList = computed<GuessResult[]>(() => {
-    const guesses = [...this.guesses()];
-    while (guesses.length < this.MAX_GUESSES) {
-      guesses.push({ value: [], distance: []});
+  public lastGuessHex = computed<string>(() => {
+    if (this.guesses().length === 0) {
+      return 'transparent';
     }
-    return guesses;
+    return '#' + this.guesses()[this.guesses().length - 1].value.join('');
   });
 
   public guessModel = signal<GuessModel>({
@@ -68,7 +71,7 @@ export class Game {
   });
 
   public submit() {
-    if (!this.guessForm().valid()) {
+    if (!this.guessForm().valid() || this.guesses().length === this.MAX_GUESSES) {
       return;
     }
 
@@ -81,21 +84,27 @@ export class Game {
       distance.push(diff);
     }
 
-    const guesses = this.guesses();
+    const guesses = [...this.guesses()];
     guesses.push({ value: guess, distance: distance });
     this.guesses.set(guesses);
 
     if (guess.join('') === target.join('')) {
-      this.win = true;
-      console.log('win');
+      this.win.set(true);
+      this.showResult.set(true);
+      this.gameFinished.set(true);
     }
 
-    if (!this.win && this.guesses().length === this.MAX_GUESSES) {
-      this.win = false;
-      console.log('lose');
+    if (!this.win() && this.guesses().length === this.MAX_GUESSES) {
+      this.win.set(false);
+      this.showResult.set(true);
+      this.gameFinished.set(true);
     }
 
     this.resetForm();
+  }
+
+  public closeModal() {
+    this.showResult.set(false);
   }
 
   public keyup(event: KeyboardEvent) {

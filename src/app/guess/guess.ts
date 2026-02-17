@@ -1,4 +1,5 @@
-import {Component, computed, input} from '@angular/core';
+import {Component, computed, inject, input} from '@angular/core';
+import {GuessService} from "../guess-service";
 
 @Component({
   selector: 'app-guess',
@@ -7,7 +8,7 @@ import {Component, computed, input} from '@angular/core';
   styleUrl: './guess.css',
 })
 export class Guess {
-
+  private guessService = inject(GuessService);
   public value = input<string[]>([]);
   public distance = input<number[]>([]);
 
@@ -17,18 +18,6 @@ export class Guess {
 
   public getDistanceIndicator(index: number) {
     const distance = this.distance()[index];
-
-    if (distance === 0) {
-      return '✅';
-    }
-
-    if (distance > 0) {
-      if (distance < 3) return '🔼';
-      return '⏫';
-    }
-    else {
-      if (distance > -3) return '🔽';
-      return '⏬';
-    }
+    return this.guessService.getDistanceIndicator(distance);
   }
 }

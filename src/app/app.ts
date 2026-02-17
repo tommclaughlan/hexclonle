@@ -4,10 +4,9 @@ import {Game} from './game/game';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Game],
+  imports: [RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App {
-  protected readonly title = signal('untitled');
 }

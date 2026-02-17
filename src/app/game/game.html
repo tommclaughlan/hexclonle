@@ -1,11 +1,13 @@
-
+@if (showResult()) {
+    <app-result-modal [win]="win()" [guesses]="guesses()" [target]="hexCode()" [gameId]="gameSeed()" (close)="closeModal()"></app-result-modal>
+}
 <div class="target-panel">
   <div class="color-panel" [style.background]="'#' + hexCode()">
     <span class="color-text">
       Target
     </span>
   </div>
-  <div class="color-panel">
+  <div class="color-panel" [style.background]="lastGuessHex()">
     <span class="color-text">
       Last Guess
     </span>
@@ -18,10 +20,14 @@
   <input class="input-digit" [formField]="guessForm.fourth" hexDigit (keyup)="keyup($event)">
   <input class="input-digit" [formField]="guessForm.fifth" hexDigit (keyup)="keyup($event)">
   <input class="input-digit" [formField]="guessForm.sixth" hexDigit (keyup)="keyup($event)">
-  <div class="submit" (click)="submit()">⏵</div>
+  @if (this.gameFinished()) {
+      <div class="submit" (click)="showResult.set(true)">ⓘ</div>
+  }@else {
+      <div class="submit" (click)="submit()">↩</div>
+  }
 </div>
 <div class="guess-panel">
-  @for (guess of guesses(); track guess) {
+  @for (guess of guessesReverse(); track guess) {
     <app-guess [value]="guess.value" [distance]="guess.distance"></app-guess>
   }
 </div>
