@@ -7,7 +7,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "untitled": {
+    "hexclonle": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -57,10 +57,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "untitled:build:production"
+              "buildTarget": "hexclonle:build:production"
             },
             "development": {
-              "buildTarget": "untitled:build:development"
+              "buildTarget": "hexclonle:build:development"
             }
           },
           "defaultConfiguration": "development"
