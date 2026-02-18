@@ -1,6 +1,7 @@
-import {Component, computed, inject, input, output} from '@angular/core';
+import {Component, computed, inject, input, output, signal} from '@angular/core';
 import {GuessResult} from "../game/game";
 import {GuessService} from "../guess-service";
+import {GetColorName} from "hex-color-to-color-name";
 
 @Component({
   selector: 'app-result-modal',
@@ -15,6 +16,7 @@ export class ResultModal {
   public guesses = input<GuessResult[]>([]);
   public target = input<string>('');
   public gameId = input<number>(0);
+  public copied = signal(false);
   public close = output();
 
   public getDistanceIndicator = this.guessService.getDistanceIndicator;
@@ -38,6 +40,10 @@ export class ResultModal {
     return Math.round(Math.floor(max - result) / max * 30) + Math.floor(Math.min(5 - this.guesses().length + 2, 5) / 5 * 70);
   });
 
+  public getColorName = computed(() => {
+      return GetColorName(this.target());
+  });
+
   public copyToClipboard() {
     let text = "I got Hexclonle #" + this.gameId() + " in " + this.guesses().length + "! "
       + "Score: " + this.getScore() + "%\n\n";
@@ -51,6 +57,8 @@ export class ResultModal {
     text += "\nhttps://tommclaughlan.github.io/hexclonle/"
 
     navigator.clipboard.writeText(text);
+
+    this.copied.set(true);
   }
 
 }

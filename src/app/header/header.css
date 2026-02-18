@@ -1,0 +1,7 @@
+.toolbar {
+    --mat-toolbar-container-background-color: #dabeeb;
+    margin-bottom: 32px;
+    font-size: 24px;
+    justify-content: center;
+    box-shadow: 0 0 16px #9e72b8;
+}

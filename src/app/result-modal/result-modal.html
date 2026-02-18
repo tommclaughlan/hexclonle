@@ -10,7 +10,8 @@
                 Better luck next time!
             }
         </h1>
-        <p>Score: {{ getScore() }}%</p>
+        <p>The hidden colour was: <b>{{getColorName()}}</b> (#{{target()}})</p>
+        <p><b>Score: {{ getScore() }}%</b></p>
         <div class="guesses">
             @for (guess of guesses(); track $index) {
                 <div class="guess">
@@ -20,7 +21,9 @@
                 </div>
             }
         </div>
-
-        <button (click)="copyToClipboard()">Copy to clipboard</button>
+        <button class="copy-button" (click)="copyToClipboard()">Copy to clipboard</button>
+        <p class="copied-text">
+            @if (copied()) {Copied!}
+        </p>
     </div>
 </div>

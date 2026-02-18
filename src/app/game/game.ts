@@ -1,4 +1,13 @@
-import {ApplicationRef, ChangeDetectionStrategy, Component, computed, inject, input, signal} from '@angular/core';
+import {
+    ApplicationRef,
+    ChangeDetectionStrategy,
+    Component,
+    computed,
+    inject,
+    Input,
+    input,
+    signal
+} from '@angular/core';
 import {Random} from '../random';
 import {form, FormField, required} from '@angular/forms/signals';
 import {Guess} from '../guess/guess';
@@ -36,10 +45,17 @@ export class Game {
     return [...this.guesses()].reverse();
   });
   public showResult = signal(false);
-  public id = input<number>();
+  // public id = input<number>();
+
+  @Input()
+  set id(id: number) {
+      this.random.setSeed(id);
+  }
+
   public gameSeed = computed<number>(() => {
-    const id = this.id() ?? this.random.daysSinceStart();
-    return id > this.random.daysSinceStart() ? this.random.daysSinceStart() : id;
+    return this.random.getSeed();
+    // const id = this.id() ?? this.random.daysSinceStart();
+    // return id > this.random.daysSinceStart() ? this.random.daysSinceStart() : id;
   });
   public hexCode = computed<string>(() => {
     const rng = this.random.getRng(this.gameSeed());
