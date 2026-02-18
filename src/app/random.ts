@@ -4,12 +4,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class Random {
-  private seed: number;
   private startDay: number = new Date(2026, 0, 1).getTime();
-
-  public constructor() {
-    this.seed = 1;
-  }
 
   public getRng(seed: number) {
     return () => {
@@ -21,7 +16,7 @@ export class Random {
   }
 
   public daysSinceStart() {
-    const end = Date.now();
+    const end = new Date(Date.now()).setHours(0, 0, 0, 0);
     return Math.round((end - this.startDay) / (1000 * 60 * 60 * 24))
   }
 }

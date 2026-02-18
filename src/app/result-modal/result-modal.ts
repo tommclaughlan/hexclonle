@@ -39,7 +39,7 @@ export class ResultModal {
   });
 
   public copyToClipboard() {
-    let text = "I got Hexcodle #" + this.gameId() + " in " + this.guesses().length + "! "
+    let text = "I got Hexclonle #" + this.gameId() + " in " + this.guesses().length + "! "
       + "Score: " + this.getScore() + "%\n\n";
 
     for (let guess of this.guesses()) {
@@ -48,6 +48,7 @@ export class ResultModal {
       }
       text += "\n";
     }
+    text += "\nhttps://tommclaughlan.github.io/hexclonle/"
 
     navigator.clipboard.writeText(text);
   }

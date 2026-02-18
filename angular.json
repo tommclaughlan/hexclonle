@@ -46,6 +46,7 @@
               "outputHashing": "all"
             },
             "development": {
+              "baseHref": "/hexclonle/",
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true
