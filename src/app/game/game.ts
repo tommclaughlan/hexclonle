@@ -45,18 +45,20 @@ export class Game {
     return [...this.guesses()].reverse();
   });
   public showResult = signal(false);
-  // public id = input<number>();
 
   @Input()
   set id(id: number) {
       this.random.setSeed(id);
+      this.guesses.set([]);
+      this.gameFinished.set(false);
+      this.win.set(false);
+      this.resetForm();
   }
 
   public gameSeed = computed<number>(() => {
     return this.random.getSeed();
-    // const id = this.id() ?? this.random.daysSinceStart();
-    // return id > this.random.daysSinceStart() ? this.random.daysSinceStart() : id;
   });
+
   public hexCode = computed<string>(() => {
     const rng = this.random.getRng(this.gameSeed());
     return rng().toString(16).slice(2, 8).toUpperCase();
