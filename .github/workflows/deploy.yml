@@ -32,8 +32,6 @@ jobs:
         uses: actions/configure-pages@v5
       - id: build-publish
         uses: bitovi/github-actions-angular-to-github-pages@v1.0.0
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
 
   # Deployment job
   deploy:
