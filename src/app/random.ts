@@ -1,19 +1,19 @@
-import {computed, Injectable} from '@angular/core';
+import {computed, Injectable, signal} from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Random {
   private startDay: number = new Date(2026, 0, 1).getTime();
-  private seed = 0;
+  private seed = signal(0);
 
   public setSeed(seed: number) {
       const id = seed ?? this.daysSinceStart();
-      this.seed = id > this.daysSinceStart() ? this.daysSinceStart() : id;
+      this.seed.set(id > this.daysSinceStart() ? this.daysSinceStart() : id);
   }
 
   public getSeed() {
-      return this.seed;
+      return this.seed();
   }
 
   public getRng(seed: number) {
