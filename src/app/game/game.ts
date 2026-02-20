@@ -126,11 +126,12 @@ export class Game {
   }
 
   public keyup(event: KeyboardEvent) {
-    if (event.key === 'Backspace') {
-      let prev = (event.target as HTMLInputElement | null)?.previousElementSibling;
-      if (prev !== null) {
-        (prev as HTMLInputElement).focus();
-      }
+    if (event.key === 'ArrowRight') {
+        this.selectNext(event);
+    }
+
+    if (event.key === 'Backspace' || event.key === 'ArrowLeft') {
+        this.selectPrevious(event);
     }
 
     if (event.key === 'Enter') {
@@ -142,6 +143,22 @@ export class Game {
         prev = prev?.previousElementSibling;
       }
     }
+  }
+
+  private selectNext(event: KeyboardEvent) {
+      let next = (event.target as HTMLInputElement | null)?.nextElementSibling;
+      if (next) {
+          (next as HTMLInputElement).focus();
+          (next as HTMLInputElement).selectionStart = (next as HTMLInputElement).selectionEnd = (next as HTMLInputElement).value.length;
+      }
+  }
+
+  private selectPrevious(event: KeyboardEvent) {
+      let prev = (event.target as HTMLInputElement | null)?.previousElementSibling;
+      if (prev) {
+          (prev as HTMLInputElement).focus();
+          (prev as HTMLInputElement).selectionStart = (prev as HTMLInputElement).selectionEnd = (prev as HTMLInputElement).value.length;
+      }
   }
 
   private getGuess() {

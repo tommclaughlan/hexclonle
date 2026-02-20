@@ -14,16 +14,16 @@
   </div>
 </div>
 <div class="input-panel">
-  <input class="input-digit" [formField]="guessForm.first" hexDigit>
+  <input class="input-digit" [formField]="guessForm.first" hexDigit (keyup)="keyup($event)">
   <input class="input-digit" [formField]="guessForm.second" hexDigit (keyup)="keyup($event)">
   <input class="input-digit" [formField]="guessForm.third" hexDigit (keyup)="keyup($event)">
   <input class="input-digit" [formField]="guessForm.fourth" hexDigit (keyup)="keyup($event)">
   <input class="input-digit" [formField]="guessForm.fifth" hexDigit (keyup)="keyup($event)">
   <input class="input-digit" [formField]="guessForm.sixth" hexDigit (keyup)="keyup($event)">
   @if (this.gameFinished()) {
-      <div class="submit" (click)="showResult.set(true)">ⓘ</div>
+      <button class="submit" (click)="showResult.set(true)" (keyup)="keyup($event)">ⓘ</button>
   }@else {
-      <div class="submit" (click)="submit()">↩</div>
+      <button class="submit" (click)="submit()" (keyup)="keyup($event)">↩</button>
   }
 </div>
 <div class="guess-panel">
